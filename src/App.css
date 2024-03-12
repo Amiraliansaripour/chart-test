@@ -1,0 +1,41 @@
+.app{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.items{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.items .item{
+width: 400px;
+background-color: rgb(71, 66, 66);
+display: flex;
+align-items: center;
+justify-content: space-around;
+padding: 5px;
+border: 1px solid #fff;
+border-radius: 10px;
+margin-top: 10px;
+}
+
+.items .item img{
+  width: 50px;
+  border-radius: 50%;
+}
+
+a{
+  color: #fff;
+}
+
+.ohlc{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
