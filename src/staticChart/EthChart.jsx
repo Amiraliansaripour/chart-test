@@ -1,15 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { createChart, ColorType } from 'lightweight-charts';
 import ChartData from './../data/amirData.json'
-
-const StaticChart = () => {
+import Daata from './../data/ticker.json'
+const EthChart = () => {
     const [ohlc, setOhlc] = useState()
     const chartContainerRef = useRef()
+    const baseChart = [];
 
     // line data
-    const lineData = ChartData.map(item =>({time: item[0]/1000 , value:(parseFloat(item[1]) + parseFloat(item[2])) / 2}))
-
     useEffect(() => {
+        for(const time in Daata.Open){
+            const timeData = {
+                time: parseInt(time),
+                open: Daata.Open[time],
+                high: Daata.High[time],
+                low: Daata.Low[time],
+                close: Daata.Close[time]
+              };
+
+              baseChart.push(Object.values(timeData));
+        }
         // create chart container and layout
         const chart = createChart(chartContainerRef.current, {
             layout: {
@@ -36,24 +46,27 @@ const StaticChart = () => {
 
         chart.subscribeCrosshairMove((param) => {
             const ohl = param.seriesData.get(candleSeries)
-            setOhlc(ohl)
-            
+           
         })
 
 
 
-        const chartBTC = ChartData.map((data) => {
-            return { time: data[0] / 1000, open: parseFloat(data[1]) , high: parseFloat(data[2]), low: parseFloat(data[3]), close: parseFloat(data[4]) }
+
+        const chartBTC = ChartData.map((data,index) => {
+            const bb = { time: data[0], open: parseFloat(data[1]) , high: parseFloat(data[2]), low: parseFloat(data[3]), close: parseFloat(data[4]) ,id:index }
+            // console.log(bb);
+            return bb
         })
         candleSeries.setData(chartBTC)
-
-
-        //   add chart Series Type
-        const lineSeries = chart.addLineSeries()
-        lineSeries.setData(lineData)
-        lineSeries.applyOptions({
-            lineWidth:1
+        chart.applyOptions({
+            localization:{
+                timeFormatter: (timestamp) => {
+                    return new Date(timestamp * 1000).toLocaleString('en-GB');
+               }
+            }
         })
+
+       
 
         return () => {
             chart.remove()
@@ -67,7 +80,7 @@ const StaticChart = () => {
             </div>
 
             <div>
-                <h1>Bitcoin</h1>
+                <h1>ETH</h1>
 
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Earum architecto voluptatibus magni. Cum nam, ea asperiores dicta nisi atque temporibus pariatur quis repellat nobis quos tempora? A, nesciunt quidem? Iure.</p>
             </div>
@@ -75,4 +88,4 @@ const StaticChart = () => {
     )
 }
 
-export default StaticChart
+export default EthChart

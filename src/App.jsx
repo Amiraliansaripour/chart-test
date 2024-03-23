@@ -2,6 +2,7 @@ import './App.css'
 import StaticChart from './staticChart/StaticChart'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Lists from './Lists'
+import { route } from './route'
 function App() {
 
  
@@ -12,8 +13,15 @@ function App() {
       </div>
         <Router>
           <Routes>
-            <Route path='/' element={<Lists/>} />
-            <Route path='/bitcoin' element={<StaticChart />} />
+            {
+              route.map((r,index) =>{
+                return(
+                  <Route key={index} path={r.path} element={r.component} />
+                )
+              })
+            }
+           
+
           </Routes>
 
         </Router>
